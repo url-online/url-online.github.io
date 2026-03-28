@@ -65,48 +65,46 @@
             object-fit: contain;
             background: #2b6e3c;
             cursor: none;
-            box-shadow: 0 0 0 3px rgba(255,215,140,0.5), 0 8px 20px rgba(0,0,0,0.4);
-            border-radius: 12px;
+            box-shadow: 0 0 0 2px rgba(255,215,140,0.4);
+            border-radius: 8px;
         }
 
-        .ui-overlay {
+        /* Marcadores minimalistas en esquinas */
+        .score-display {
             position: absolute;
-            top: env(safe-area-inset-top, 10px);
-            left: env(safe-area-inset-left, 10px);
-            right: env(safe-area-inset-right, 10px);
-            padding: 0.5rem 0.8rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
+            top: max(env(safe-area-inset-top, 8px), 8px);
+            left: max(env(safe-area-inset-left, 8px), 8px);
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(2px);
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-family: monospace;
+            font-size: clamp(0.75rem, 3.5vw, 0.9rem);
+            font-weight: bold;
+            color: #fff8e7;
             pointer-events: none;
             z-index: 10;
+            border: 1px solid rgba(255,215,140,0.5);
+            letter-spacing: 0.5px;
+        }
+
+        .difficulty-display {
+            position: absolute;
+            top: max(env(safe-area-inset-top, 8px), 8px);
+            right: max(env(safe-area-inset-right, 8px), 8px);
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(2px);
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-family: monospace;
+            font-size: clamp(0.75rem, 3.5vw, 0.9rem);
             font-weight: bold;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-            backdrop-filter: blur(6px);
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 40px;
-            margin-top: 8px;
-            margin-left: 8px;
-            margin-right: 8px;
-            font-family: 'Courier New', monospace;
-            font-size: clamp(0.8rem, 3.5vw, 1.1rem);
+            color: #ffbc6e;
+            pointer-events: none;
+            z-index: 10;
+            border: 1px solid rgba(255,215,140,0.5);
+            letter-spacing: 0.5px;
         }
-
-        .score-box, .difficulty-box {
-            background: rgba(0, 0, 0, 0.65);
-            padding: 0.2rem 0.8rem;
-            border-radius: 30px;
-            border: 1px solid #ffdd99;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-            font-size: inherit;
-        }
-
-        .score-box span, .difficulty-box span {
-            color: #ffe5b4;
-        }
-
-        .score-box { color: #fff2cf; }
-        .difficulty-box { color: #ffbc6e; }
 
         .game-message {
             position: absolute;
@@ -116,15 +114,15 @@
             text-align: center;
             pointer-events: none;
             z-index: 10;
-            font-size: clamp(0.7rem, 3vw, 0.85rem);
+            font-size: clamp(0.65rem, 2.8vw, 0.8rem);
             font-weight: bold;
             color: #ffffdd;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.5);
             width: auto;
             white-space: nowrap;
-            padding: 0.2rem 1rem;
-            border-radius: 50px;
-            backdrop-filter: blur(5px);
+            padding: 3px 12px;
+            border-radius: 30px;
+            backdrop-filter: blur(4px);
             font-family: monospace;
             border: 1px solid rgba(255,200,100,0.5);
         }
@@ -135,26 +133,25 @@
             background: #d98c2f;
             color: white;
             border: none;
-            padding: 0.4rem 1rem;
-            border-radius: 40px;
+            padding: 0.35rem 0.9rem;
+            border-radius: 30px;
             font-weight: bold;
             font-size: clamp(0.7rem, 3vw, 0.85rem);
             z-index: 20;
             pointer-events: auto;
             cursor: pointer;
             font-family: inherit;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
             transition: transform 0.1s ease;
-            backdrop-filter: blur(4px);
         }
 
         .restart-btn {
             right: max(env(safe-area-inset-right, 10px), 10px);
-            background: rgba(217, 140, 47, 0.9);
+            background: rgba(217, 140, 47, 0.85);
         }
         .menu-btn {
             left: max(env(safe-area-inset-left, 10px), 10px);
-            background: rgba(58, 110, 165, 0.9);
+            background: rgba(58, 110, 165, 0.85);
         }
         .restart-btn:active, .menu-btn:active {
             transform: scale(0.96);
@@ -167,10 +164,8 @@
 </div>
 <div class="game-container">
     <canvas id="gameCanvas"></canvas>
-    <div class="ui-overlay">
-        <div class="score-box">🏓 <span id="scoreValue">0</span></div>
-        <div class="difficulty-box">⚡ <span id="difficultyValue">1.00</span>x</div>
-    </div>
+    <div class="score-display" id="scoreDisplay">🏓 <span id="scoreValue">0</span></div>
+    <div class="difficulty-display" id="difficultyDisplay">⚡ <span id="difficultyValue">1.00</span>x</div>
     <div class="game-message" id="gameMessage">
         🏓 Toca y arrastra la pala
     </div>
@@ -265,7 +260,7 @@
             gameMsg.style.opacity = '0.9';
             gameMsg.innerText = '🎾 Prepara tu dedo... 🎾';
             gameMsg.style.color = '#ffffdd';
-            canvas.style.boxShadow = '0 0 0 3px rgba(255,215,140,0.5)';
+            canvas.style.boxShadow = '0 0 0 2px rgba(255,215,140,0.4)';
         }
 
         function startGameAfterCountdown() {
@@ -352,7 +347,7 @@
                     updateDifficultyUI();
 
                     canvas.style.boxShadow = '0 0 0 2px #ffdd99';
-                    setTimeout(() => { if(canvas) canvas.style.boxShadow = '0 0 0 3px rgba(255,215,140,0.5)'; }, 70);
+                    setTimeout(() => { if(canvas) canvas.style.boxShadow = '0 0 0 2px rgba(255,215,140,0.4)'; }, 70);
 
                     let hitPos = (ball.y - player.y) / player.height;
                     let angle = (hitPos - 0.5) * 1.2;
@@ -392,11 +387,11 @@
                     ball.dy = newDirY * currentSpd;
                     ball.x = ai.x - ball.radius;
                     canvas.style.boxShadow = '0 0 0 1px #ffaa66';
-                    setTimeout(() => { if(canvas) canvas.style.boxShadow = '0 0 0 3px rgba(255,215,140,0.5)'; }, 50);
+                    setTimeout(() => { if(canvas) canvas.style.boxShadow = '0 0 0 2px rgba(255,215,140,0.4)'; }, 50);
                 }
             }
 
-            // DERROTA: si la pelota cruza el borde izquierdo
+            // DERROTA
             if (ball.x + ball.radius < 0) {
                 gameActive = false;
                 gameMsg.innerText = '💀 ¡PERDISTE! Reiniciando... 💀';
@@ -507,7 +502,7 @@
             ctx.shadowBlur = 0;
             ctx.font = `${Math.max(10, canvasWidth * 0.015)}px monospace`;
             ctx.fillStyle = "#f9eec1";
-            ctx.fillText("∞ INFINITY", canvasWidth - 70, 30);
+            ctx.fillText("∞", canvasWidth - 28, 32);
 
             if (countdownActive) {
                 ctx.font = `bold ${Math.min(canvasWidth, canvasHeight) * 0.22}px monospace`;
@@ -564,7 +559,7 @@
             animationId = requestAnimationFrame(gameLoop);
         }
 
-        // ---------- Eventos táctiles y mouse ----------
+        // ---------- Eventos táctiles ----------
         function handleTouchStart(e) {
             e.preventDefault();
             const rect = canvas.getBoundingClientRect();
