@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, viewport-fit=cover, user-scalable=yes">
     <title>Pong Infinity - Menú</title>
     <style>
         * {
@@ -19,11 +19,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 16px;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
             touch-action: pan-y;
         }
 
-        /* Advertencia de orientación */
         .orientation-warning {
             display: none;
             position: fixed;
@@ -37,9 +36,10 @@
             align-items: center;
             flex-direction: column;
             color: #ffdd99;
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 5vw, 1.3rem);
             text-align: center;
             backdrop-filter: blur(8px);
+            padding: 1rem;
         }
 
         @media (orientation: portrait) {
@@ -50,20 +50,21 @@
 
         .menu-container {
             width: 100%;
-            max-width: 500px;
+            max-width: 480px;
             background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(16px);
-            border-radius: 48px;
+            border-radius: 2rem;
             box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 0 2px rgba(255,215,140,0.3);
-            padding: 2rem 1.5rem;
+            padding: 1.8rem 1.2rem;
             text-align: center;
             animation: fadeInUp 0.5s ease;
+            margin: 1rem;
         }
 
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
@@ -72,40 +73,40 @@
         }
 
         h1 {
-            font-size: clamp(2rem, 10vw, 3.2rem);
+            font-size: clamp(1.8rem, 8vw, 2.5rem);
             color: #ffdd99;
-            text-shadow: 0 4px 12px rgba(0,0,0,0.5);
-            letter-spacing: 2px;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+            letter-spacing: 1px;
             margin-bottom: 0.25rem;
         }
 
         .sub {
             color: #ccaa77;
-            font-size: clamp(0.8rem, 4vw, 1rem);
-            margin-bottom: 2rem;
+            font-size: clamp(0.7rem, 3vw, 0.9rem);
+            margin-bottom: 1.5rem;
             border-bottom: 1px dashed rgba(255,215,140,0.5);
             display: inline-block;
-            padding-bottom: 0.3rem;
+            padding-bottom: 0.2rem;
         }
 
         .menu-buttons {
             display: flex;
             flex-direction: column;
-            gap: 1.2rem;
-            margin: 2rem 0;
+            gap: 1rem;
+            margin: 1.5rem 0;
         }
 
         .btn {
             background: linear-gradient(135deg, #d98c2f, #b56a1a);
             border: none;
-            padding: 1rem 1.2rem;
-            font-size: clamp(1.2rem, 6vw, 1.6rem);
+            padding: 0.8rem 1rem;
+            font-size: clamp(1rem, 5vw, 1.3rem);
             font-weight: bold;
             color: white;
-            border-radius: 60px;
+            border-radius: 3rem;
             cursor: pointer;
             transition: transform 0.1s ease, box-shadow 0.1s ease;
-            box-shadow: 0 6px 0 #6a3e0e;
+            box-shadow: 0 4px 0 #6a3e0e;
             font-family: inherit;
             letter-spacing: 1px;
             touch-action: manipulation;
@@ -113,87 +114,80 @@
         }
 
         .btn:active {
-            transform: translateY(3px);
-            box-shadow: 0 3px 0 #6a3e0e;
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #6a3e0e;
         }
 
         .btn-secondary {
             background: linear-gradient(135deg, #3a6ea5, #2a4c7a);
-            box-shadow: 0 6px 0 #1a3552;
+            box-shadow: 0 4px 0 #1a3552;
         }
 
         .info-section {
             background: rgba(0,0,0,0.6);
-            border-radius: 32px;
-            padding: 1.2rem;
+            border-radius: 1.5rem;
+            padding: 1rem;
             margin-top: 1rem;
             text-align: left;
             color: #f0e6c5;
-            font-size: clamp(0.85rem, 4vw, 1rem);
+            font-size: clamp(0.8rem, 3.5vw, 0.95rem);
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255,215,140,0.4);
-            transition: all 0.3s;
-            max-height: 60vh;
+            max-height: 55vh;
             overflow-y: auto;
         }
 
         .info-section h3 {
             color: #ffbc6e;
-            margin-bottom: 0.8rem;
-            font-size: 1.3rem;
+            margin-bottom: 0.6rem;
+            font-size: 1.1rem;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .info-section p {
-            margin: 0.8rem 0;
+            margin: 0.6rem 0;
             line-height: 1.4;
         }
 
         .info-section ul {
-            margin-left: 1.5rem;
-            margin-top: 0.5rem;
+            margin-left: 1.2rem;
+            margin-top: 0.4rem;
         }
 
         .info-section li {
-            margin: 0.5rem 0;
+            margin: 0.3rem 0;
         }
 
         .close-info {
             background: #ffaa55;
             border: none;
-            padding: 8px 20px;
-            border-radius: 40px;
+            padding: 6px 16px;
+            border-radius: 2rem;
             color: #2a2a1a;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 16px;
+            margin-top: 12px;
             width: 100%;
-            font-size: 1rem;
-            transition: background 0.2s;
-        }
-
-        .close-info:active {
-            background: #e6953e;
+            font-size: 0.9rem;
         }
 
         .footer {
-            margin-top: 1.5rem;
-            font-size: 0.7rem;
+            margin-top: 1rem;
+            font-size: 0.65rem;
             color: #88aa88;
         }
 
+        /* Scroll suave */
         .info-section::-webkit-scrollbar {
-            width: 4px;
+            width: 3px;
         }
         .info-section::-webkit-scrollbar-track {
             background: rgba(0,0,0,0.3);
-            border-radius: 4px;
         }
         .info-section::-webkit-scrollbar-thumb {
             background: #ffbc6e;
-            border-radius: 4px;
         }
     </style>
 </head>
@@ -203,7 +197,7 @@
 </div>
 <div class="menu-container">
     <h1>🏓 PONG INFINITY</h1>
-    <div class="sub">⚡ Sin límites · Dificultad infinita ⚡</div>
+    <div class="sub">⚡ Dificultad infinita · Sin Game Over ⚡</div>
 
     <div class="menu-buttons">
         <button class="btn" id="playBtn">🎮 JUGAR AHORA</button>
@@ -214,7 +208,7 @@
         <h3>📌 ¿Cómo jugar?</h3>
         <p><strong>🎯 Objetivo:</strong> Golpea la pelota con tu pala (izquierda) para sumar puntos. Cada golpe aumenta la dificultad: la pelota se acelera y tu pala se encoge. La IA es invencible.</p>
         <p><strong>🕹️ Controles:</strong> Desliza verticalmente sobre la zona de juego para mover tu pala. Totalmente táctil.</p>
-        <p><strong>⚠️ Derrota:</strong> Si la pelota pasa tu pala, perderás y el juego se reiniciará automáticamente. ¡Intenta no fallar!</p>
+        <p><strong>⚠️ Derrota:</strong> Si la pelota pasa tu pala, perderás y el juego se reiniciará automáticamente.</p>
         <p><strong>🏆 Puntuación:</strong> Cada golpe suma 1 punto. La dificultad crece sin límite.</p>
         <button class="close-info" id="closeInfoBtn">CERRAR</button>
     </div>

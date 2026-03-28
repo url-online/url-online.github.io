@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, viewport-fit=cover, user-scalable=no">
     <title>Pong Infinity - Juego</title>
     <style>
         * {
@@ -14,7 +14,7 @@
         }
 
         body {
-            background: linear-gradient(145deg, #0a1f1a 0%, #05100c 100%);
+            background: #0a1f12;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -37,9 +37,10 @@
             align-items: center;
             flex-direction: column;
             color: #ffdd99;
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 5vw, 1.3rem);
             text-align: center;
             backdrop-filter: blur(8px);
+            padding: 1rem;
         }
 
         @media (orientation: portrait) {
@@ -54,9 +55,6 @@
             left: 0;
             width: 100%;
             height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             background: radial-gradient(circle at center, #1a3a2a, #0a1f12);
         }
 
@@ -67,39 +65,40 @@
             object-fit: contain;
             background: #2b6e3c;
             cursor: none;
-            box-shadow: 0 0 0 4px rgba(255,215,140,0.5), 0 10px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 0 0 3px rgba(255,215,140,0.5), 0 8px 20px rgba(0,0,0,0.4);
             border-radius: 12px;
         }
 
         .ui-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 0.8rem 1.8rem;
+            top: env(safe-area-inset-top, 10px);
+            left: env(safe-area-inset-left, 10px);
+            right: env(safe-area-inset-right, 10px);
+            padding: 0.5rem 0.8rem;
             display: flex;
             justify-content: space-between;
             align-items: baseline;
             pointer-events: none;
             z-index: 10;
             font-weight: bold;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
-            backdrop-filter: blur(8px);
-            background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2));
-            box-sizing: border-box;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            backdrop-filter: blur(6px);
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 40px;
+            margin-top: 8px;
+            margin-left: 8px;
+            margin-right: 8px;
             font-family: 'Courier New', monospace;
+            font-size: clamp(0.8rem, 3.5vw, 1.1rem);
         }
 
         .score-box, .difficulty-box {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 0.4rem 1.2rem;
-            border-radius: 60px;
-            font-size: 1.2rem;
-            letter-spacing: 1px;
-            font-weight: 800;
-            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.65);
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
             border: 1px solid #ffdd99;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            font-size: inherit;
         }
 
         .score-box span, .difficulty-box span {
@@ -111,61 +110,54 @@
 
         .game-message {
             position: absolute;
-            bottom: 8%;
-            left: 0;
-            right: 0;
+            bottom: max(env(safe-area-inset-bottom, 8px), 8px);
+            left: 50%;
+            transform: translateX(-50%);
             text-align: center;
             pointer-events: none;
             z-index: 10;
-            font-size: 0.85rem;
+            font-size: clamp(0.7rem, 3vw, 0.85rem);
             font-weight: bold;
             color: #ffffdd;
-            background: rgba(0, 0, 0, 0.55);
-            width: fit-content;
-            margin: 0 auto;
-            padding: 0.3rem 1.2rem;
+            background: rgba(0, 0, 0, 0.6);
+            width: auto;
+            white-space: nowrap;
+            padding: 0.2rem 1rem;
             border-radius: 50px;
-            backdrop-filter: blur(6px);
+            backdrop-filter: blur(5px);
             font-family: monospace;
-            letter-spacing: 1px;
-            border: 1px solid rgba(255,200,100,0.4);
+            border: 1px solid rgba(255,200,100,0.5);
         }
 
         .restart-btn, .menu-btn {
             position: absolute;
-            bottom: 3%;
+            bottom: max(env(safe-area-inset-bottom, 10px), 10px);
             background: #d98c2f;
             color: white;
             border: none;
-            padding: 0.6rem 1.3rem;
-            border-radius: 50px;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
             font-weight: bold;
-            font-size: 0.9rem;
+            font-size: clamp(0.7rem, 3vw, 0.85rem);
             z-index: 20;
             pointer-events: auto;
             cursor: pointer;
             font-family: inherit;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
             transition: transform 0.1s ease;
             backdrop-filter: blur(4px);
         }
 
         .restart-btn {
-            right: 3%;
+            right: max(env(safe-area-inset-right, 10px), 10px);
             background: rgba(217, 140, 47, 0.9);
         }
         .menu-btn {
-            left: 3%;
+            left: max(env(safe-area-inset-left, 10px), 10px);
             background: rgba(58, 110, 165, 0.9);
         }
         .restart-btn:active, .menu-btn:active {
-            transform: scale(0.95);
-        }
-
-        @media (orientation: portrait) {
-            .game-container::after {
-                display: none;
-            }
+            transform: scale(0.96);
         }
     </style>
 </head>
@@ -176,14 +168,14 @@
 <div class="game-container">
     <canvas id="gameCanvas"></canvas>
     <div class="ui-overlay">
-        <div class="score-box">🏓 PUNTOS: <span id="scoreValue">0</span></div>
-        <div class="difficulty-box">⚡ DIFICULTAD: <span id="difficultyValue">1.00</span>x</div>
+        <div class="score-box">🏓 <span id="scoreValue">0</span></div>
+        <div class="difficulty-box">⚡ <span id="difficultyValue">1.00</span>x</div>
     </div>
     <div class="game-message" id="gameMessage">
-        🏓 Toca y arrastra la pala · Sin límites 🏓
+        🏓 Toca y arrastra la pala
     </div>
-    <button class="restart-btn" id="restartButton">🔄 REINICIAR</button>
-    <button class="menu-btn" id="menuButton">🏠 MENÚ</button>
+    <button class="restart-btn" id="restartButton">🔄</button>
+    <button class="menu-btn" id="menuButton">🏠</button>
 </div>
 
 <script>
@@ -217,8 +209,6 @@
 
         let canvasWidth = 0, canvasHeight = 0;
         let isDragging = false;
-
-        // Control de reinicio automático por derrota
         let lossResetTimer = null;
 
         // ---------- Funciones auxiliares ----------
@@ -245,12 +235,10 @@
         }
 
         function resetGame() {
-            // Cancelar cualquier reinicio pendiente
             if (lossResetTimer) {
                 clearTimeout(lossResetTimer);
                 lossResetTimer = null;
             }
-
             gameActive = false;
             countdownActive = true;
             countdownValue = 3;
@@ -277,6 +265,7 @@
             gameMsg.style.opacity = '0.9';
             gameMsg.innerText = '🎾 Prepara tu dedo... 🎾';
             gameMsg.style.color = '#ffffdd';
+            canvas.style.boxShadow = '0 0 0 3px rgba(255,215,140,0.5)';
         }
 
         function startGameAfterCountdown() {
@@ -293,9 +282,9 @@
             ball.dx = dirX * currentSpd;
             ball.dy = dirY * currentSpd;
 
-            gameMsg.innerText = '⚡ ¡JUEGO INFINITO! Golpea sin parar ⚡';
+            gameMsg.innerText = '⚡ ¡JUEGO INFINITO! ⚡';
             setTimeout(() => {
-                if (gameActive) gameMsg.innerText = '👆 Desliza verticalmente · Dificultad crece';
+                if (gameActive) gameMsg.innerText = '👆 Desliza verticalmente';
             }, 2000);
         }
 
@@ -305,19 +294,19 @@
             canvas.width = canvasWidth;
             canvas.height = canvasHeight;
 
-            let paddleW = Math.max(10, canvasWidth * 0.018);
-            let paddleH = Math.max(72, canvasHeight * 0.22);
+            let paddleW = Math.max(8, canvasWidth * 0.016);
+            let paddleH = Math.max(60, canvasHeight * 0.2);
 
             player.width = paddleW;
             player.height = paddleH;
             player.originalHeight = paddleH;
-            player.x = paddleW * 1.3;
+            player.x = paddleW * 1.2;
 
             ai.width = paddleW;
             ai.height = paddleH;
             ai.x = canvasWidth - (paddleW * 1.5);
 
-            ball.radius = Math.max(8, Math.min(canvasWidth * 0.018, canvasHeight * 0.032));
+            ball.radius = Math.max(7, Math.min(canvasWidth * 0.016, canvasHeight * 0.03));
 
             player.y = clamp(player.y, 0, canvasHeight - player.height);
             ai.y = clamp(ai.y, 0, canvasHeight - ai.height);
@@ -343,7 +332,6 @@
             ball.x += ball.dx * deltaSec;
             ball.y += ball.dy * deltaSec;
 
-            // Colisiones con bordes superior/inferior
             if (ball.y - ball.radius <= 0) {
                 ball.y = ball.radius;
                 ball.dy = -ball.dy;
@@ -353,7 +341,6 @@
                 ball.dy = -ball.dy;
             }
 
-            // Colisión con jugador (izquierda)
             if (ball.dx < 0) {
                 let playerCollision = (ball.x - ball.radius <= player.x + player.width &&
                                         ball.x + ball.radius >= player.x &&
@@ -365,7 +352,7 @@
                     updateDifficultyUI();
 
                     canvas.style.boxShadow = '0 0 0 2px #ffdd99';
-                    setTimeout(() => { if(canvas) canvas.style.boxShadow = ''; }, 70);
+                    setTimeout(() => { if(canvas) canvas.style.boxShadow = '0 0 0 3px rgba(255,215,140,0.5)'; }, 70);
 
                     let hitPos = (ball.y - player.y) / player.height;
                     let angle = (hitPos - 0.5) * 1.2;
@@ -387,7 +374,6 @@
                 }
             }
 
-            // Colisión con IA (derecha) - invencible
             if (ball.dx > 0) {
                 let aiCollision = (ball.x + ball.radius >= ai.x &&
                                     ball.x - ball.radius <= ai.x + ai.width &&
@@ -406,26 +392,24 @@
                     ball.dy = newDirY * currentSpd;
                     ball.x = ai.x - ball.radius;
                     canvas.style.boxShadow = '0 0 0 1px #ffaa66';
-                    setTimeout(() => { if(canvas) canvas.style.boxShadow = ''; }, 50);
+                    setTimeout(() => { if(canvas) canvas.style.boxShadow = '0 0 0 3px rgba(255,215,140,0.5)'; }, 50);
                 }
             }
 
-            // *** DERROTA: si la pelota pasa el borde izquierdo ***
+            // DERROTA: si la pelota cruza el borde izquierdo
             if (ball.x + ball.radius < 0) {
                 gameActive = false;
                 gameMsg.innerText = '💀 ¡PERDISTE! Reiniciando... 💀';
                 gameMsg.style.color = '#ff8888';
                 canvas.style.boxShadow = '0 0 0 4px #ff5555';
-                // Reiniciar después de 2 segundos
                 if (lossResetTimer) clearTimeout(lossResetTimer);
                 lossResetTimer = setTimeout(() => {
                     resetGame();
                     lossResetTimer = null;
                 }, 2000);
-                return; // No actualizar más física ni tiempo
+                return;
             }
 
-            // Seguridad: si se escapa por derecha (raro), recolocar
             if (ball.x - ball.radius > canvasWidth + 150) {
                 ball.x = canvasWidth - ai.width - ball.radius - 15;
                 ball.dx = -Math.abs(ball.dx);
@@ -445,19 +429,12 @@
             let spd = getCurrentBallSpeed();
             let ratio = (spd / BASE_BALL_SPEED).toFixed(2);
             difficultySpan.innerText = ratio + "x";
-            if (parseFloat(ratio) > 2.5) {
-                difficultySpan.style.color = "#ffaa77";
-                difficultySpan.style.textShadow = "0 0 5px #ff8844";
-            } else {
-                difficultySpan.style.color = "#ffbc6e";
-            }
         }
 
         function draw() {
             if (!ctx) return;
             ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-            // Fondo de cancha
             const grad = ctx.createLinearGradient(0, 0, 0, canvasHeight);
             grad.addColorStop(0, "#3b8a3b");
             grad.addColorStop(1, "#2a6e2a");
@@ -465,33 +442,33 @@
             ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
             ctx.strokeStyle = "#faf0d7";
-            ctx.lineWidth = Math.max(3, canvasWidth * 0.008);
-            ctx.strokeRect(12, 12, canvasWidth - 24, canvasHeight - 24);
+            ctx.lineWidth = Math.max(2, canvasWidth * 0.006);
+            ctx.strokeRect(8, 8, canvasWidth - 16, canvasHeight - 16);
 
-            ctx.setLineDash([18, 28]);
+            ctx.setLineDash([12, 20]);
             ctx.beginPath();
-            ctx.moveTo(canvasWidth/2, 10);
-            ctx.lineTo(canvasWidth/2, canvasHeight - 10);
+            ctx.moveTo(canvasWidth/2, 8);
+            ctx.lineTo(canvasWidth/2, canvasHeight - 8);
             ctx.strokeStyle = "#fff3cf";
-            ctx.lineWidth = Math.max(4, canvasWidth * 0.007);
+            ctx.lineWidth = Math.max(3, canvasWidth * 0.005);
             ctx.stroke();
 
             ctx.setLineDash([]);
             ctx.fillStyle = "#e0cba0";
-            ctx.fillRect(canvasWidth/2 - 10, 0, 20, canvasHeight);
+            ctx.fillRect(canvasWidth/2 - 6, 0, 12, canvasHeight);
             ctx.fillStyle = "#b57c48";
-            ctx.fillRect(canvasWidth/2 - 5, 0, 10, canvasHeight);
+            ctx.fillRect(canvasWidth/2 - 3, 0, 6, canvasHeight);
 
             ctx.globalAlpha = 0.1;
-            for (let i = 0; i < canvasWidth; i += 55) {
+            for (let i = 0; i < canvasWidth; i += 50) {
                 ctx.beginPath();
                 ctx.moveTo(i, 0);
                 ctx.lineTo(i, canvasHeight);
                 ctx.strokeStyle = "#ffffff";
-                ctx.lineWidth = 1.5;
+                ctx.lineWidth = 1;
                 ctx.stroke();
             }
-            for (let i = 0; i < canvasHeight; i += 55) {
+            for (let i = 0; i < canvasHeight; i += 50) {
                 ctx.beginPath();
                 ctx.moveTo(0, i);
                 ctx.lineTo(canvasWidth, i);
@@ -499,46 +476,43 @@
             }
             ctx.globalAlpha = 1;
 
-            ctx.shadowBlur = 6;
+            ctx.shadowBlur = 4;
             ctx.shadowColor = "rgba(0,0,0,0.4)";
 
-            // Pala jugador
             ctx.fillStyle = "#3182b3";
             ctx.fillRect(player.x, player.y, player.width, player.height);
             ctx.fillStyle = "#64b5e8";
             ctx.fillRect(player.x+2, player.y+2, player.width-4, player.height-4);
             ctx.fillStyle = "#c97e2a";
-            ctx.fillRect(player.x+4, player.y + player.height*0.25, player.width-8, player.height*0.12);
+            ctx.fillRect(player.x+3, player.y + player.height*0.25, player.width-6, player.height*0.1);
 
-            // Pala IA
             ctx.fillStyle = "#bc5a2c";
             ctx.fillRect(ai.x, ai.y, ai.width, ai.height);
             ctx.fillStyle = "#e87a4a";
             ctx.fillRect(ai.x+2, ai.y+2, ai.width-4, ai.height-4);
             ctx.fillStyle = "#a55a2a";
-            ctx.fillRect(ai.x+4, ai.y + ai.height*0.25, ai.width-8, ai.height*0.12);
+            ctx.fillRect(ai.x+3, ai.y + ai.height*0.25, ai.width-6, ai.height*0.1);
 
-            // Pelota
-            ctx.shadowBlur = 12;
+            ctx.shadowBlur = 8;
             ctx.shadowColor = "#ffffcc";
             ctx.beginPath();
             ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2);
             ctx.fillStyle = "#fff8e7";
             ctx.fill();
             ctx.beginPath();
-            ctx.arc(ball.x, ball.y, ball.radius-3, 0, Math.PI*2);
+            ctx.arc(ball.x, ball.y, ball.radius-2, 0, Math.PI*2);
             ctx.fillStyle = "#fff0b5";
             ctx.fill();
 
             ctx.shadowBlur = 0;
-            ctx.font = `bold ${Math.max(12, canvasWidth * 0.018)}px monospace`;
+            ctx.font = `${Math.max(10, canvasWidth * 0.015)}px monospace`;
             ctx.fillStyle = "#f9eec1";
-            ctx.fillText("∞ MODO INFINITO ∞", canvasWidth - 110, 45);
+            ctx.fillText("∞ INFINITY", canvasWidth - 70, 30);
 
             if (countdownActive) {
-                ctx.font = `bold ${Math.min(canvasWidth, canvasHeight) * 0.25}px monospace`;
+                ctx.font = `bold ${Math.min(canvasWidth, canvasHeight) * 0.22}px monospace`;
                 ctx.fillStyle = "#fff5d0";
-                ctx.shadowBlur = 12;
+                ctx.shadowBlur = 10;
                 ctx.shadowColor = "#ffaa66";
                 ctx.textAlign = "center";
                 let text = countdownValue > 0 ? countdownValue : "GO!";
