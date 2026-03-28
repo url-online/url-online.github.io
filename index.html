@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Pong Infinity - Menú</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(145deg, #0a1f1a 0%, #05100c 100%);
+            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, monospace;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            touch-action: pan-y;
+        }
+
+        /* Advertencia de orientación */
+        .orientation-warning {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: #ffdd99;
+            font-size: 1.2rem;
+            text-align: center;
+            backdrop-filter: blur(8px);
+        }
+
+        @media (orientation: portrait) {
+            .orientation-warning {
+                display: flex;
+            }
+        }
+
+        .menu-container {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(16px);
+            border-radius: 48px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 0 2px rgba(255,215,140,0.3);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: clamp(2rem, 10vw, 3.2rem);
+            color: #ffdd99;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            letter-spacing: 2px;
+            margin-bottom: 0.25rem;
+        }
+
+        .sub {
+            color: #ccaa77;
+            font-size: clamp(0.8rem, 4vw, 1rem);
+            margin-bottom: 2rem;
+            border-bottom: 1px dashed rgba(255,215,140,0.5);
+            display: inline-block;
+            padding-bottom: 0.3rem;
+        }
+
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            margin: 2rem 0;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #d98c2f, #b56a1a);
+            border: none;
+            padding: 1rem 1.2rem;
+            font-size: clamp(1.2rem, 6vw, 1.6rem);
+            font-weight: bold;
+            color: white;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+            box-shadow: 0 6px 0 #6a3e0e;
+            font-family: inherit;
+            letter-spacing: 1px;
+            touch-action: manipulation;
+            width: 100%;
+        }
+
+        .btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 #6a3e0e;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #3a6ea5, #2a4c7a);
+            box-shadow: 0 6px 0 #1a3552;
+        }
+
+        .info-section {
+            background: rgba(0,0,0,0.6);
+            border-radius: 32px;
+            padding: 1.2rem;
+            margin-top: 1rem;
+            text-align: left;
+            color: #f0e6c5;
+            font-size: clamp(0.85rem, 4vw, 1rem);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,215,140,0.4);
+            transition: all 0.3s;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .info-section h3 {
+            color: #ffbc6e;
+            margin-bottom: 0.8rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-section p {
+            margin: 0.8rem 0;
+            line-height: 1.4;
+        }
+
+        .info-section ul {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .info-section li {
+            margin: 0.5rem 0;
+        }
+
+        .close-info {
+            background: #ffaa55;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            color: #2a2a1a;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 16px;
+            width: 100%;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+
+        .close-info:active {
+            background: #e6953e;
+        }
+
+        .footer {
+            margin-top: 1.5rem;
+            font-size: 0.7rem;
+            color: #88aa88;
+        }
+
+        .info-section::-webkit-scrollbar {
+            width: 4px;
+        }
+        .info-section::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.3);
+            border-radius: 4px;
+        }
+        .info-section::-webkit-scrollbar-thumb {
+            background: #ffbc6e;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="orientation-warning">
+    🔄 GIRA EL DISPOSITIVO A HORIZONTAL 🔄
+</div>
+<div class="menu-container">
+    <h1>🏓 PONG INFINITY</h1>
+    <div class="sub">⚡ Sin límites · Dificultad infinita ⚡</div>
+
+    <div class="menu-buttons">
+        <button class="btn" id="playBtn">🎮 JUGAR AHORA</button>
+        <button class="btn btn-secondary" id="howBtn">📖 CÓMO JUGAR</button>
+    </div>
+
+    <div id="infoPanel" class="info-section" style="display: none;">
+        <h3>📌 ¿Cómo jugar?</h3>
+        <p><strong>🎯 Objetivo:</strong> Golpea la pelota con tu pala (izquierda) para sumar puntos. Cada golpe aumenta la dificultad: la pelota se acelera y tu pala se encoge. La IA es invencible.</p>
+        <p><strong>🕹️ Controles:</strong> Desliza verticalmente sobre la zona de juego para mover tu pala. Totalmente táctil.</p>
+        <p><strong>⚠️ Derrota:</strong> Si la pelota pasa tu pala, perderás y el juego se reiniciará automáticamente. ¡Intenta no fallar!</p>
+        <p><strong>🏆 Puntuación:</strong> Cada golpe suma 1 punto. La dificultad crece sin límite.</p>
+        <button class="close-info" id="closeInfoBtn">CERRAR</button>
+    </div>
+
+    <div class="footer">
+        🏓 Desafío infinito · Mejora tu récord
+    </div>
+</div>
+
+<script>
+    const playBtn = document.getElementById('playBtn');
+    const howBtn = document.getElementById('howBtn');
+    const infoPanel = document.getElementById('infoPanel');
+    const closeInfoBtn = document.getElementById('closeInfoBtn');
+
+    howBtn.addEventListener('click', () => {
+        infoPanel.style.display = 'block';
+        infoPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    closeInfoBtn.addEventListener('click', () => {
+        infoPanel.style.display = 'none';
+    });
+
+    playBtn.addEventListener('click', () => {
+        window.location.href = 'game.html';
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!infoPanel.contains(e.target) && e.target !== howBtn && infoPanel.style.display === 'block') {
+            infoPanel.style.display = 'none';
+        }
+    });
+</script>
+</body>
+</html>
